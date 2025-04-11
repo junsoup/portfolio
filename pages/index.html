@@ -1,0 +1,139 @@
+<!-- Code is written entirely by Junsu Lee. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Junsu Lee | Portfolio</title>
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="res/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="res/favicon-16x16.png">
+    <link rel="manifest" href="res/site.webmanifest">
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- js -->
+    
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@v0.173.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/"
+          }
+        }
+      </script>
+</head>
+
+<body>
+    <nav id="topnav">
+        <a href="/pages/index.html">Home</a>
+        <a href="/pages/blog.html">Blog</a>
+        <a href="/pages/projects.html">Projects</a>
+        <a href="/pages/contact.html">Contact</a>
+        <a href="resume.pdf">Résumé</a>
+        <a href="https://github.com/junsoup">Github</a>
+        <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">&#9776;</a>
+    </nav>
+    <div class="banner" id="banner">
+        <button id="toggleButton">☰</button>
+    </div>
+    <div class="content primary">
+        <div class="container">
+            <div class="split">
+                <div style="float: left; margin-right: 50px; height: 375.29px;">
+                    <img src="./res/junsu.jpg" alt="Photo of Junsu Lee at Oregon State University."
+                        style="width: 250px;">
+                </div>
+                <div style="margin-top: 20px;">
+                    <h1>Hello!</h1>
+                    <p>I am a software engineer, hobby enthusiast, and bachelor's graduate from Oregon State University
+                        in CS, with a focus in artificial intelligence. I have a passion for creating innovative systems
+                        and developing algorithms, which are the areas where I excel the most. I am enthusiastic about
+                        applying my skills to solve real-world problems. Whether it's building robust software solutions
+                        or optimizing processes, I am always eager to take on new challenges and push forward with
+                        technology.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content secondary">
+        <div class="container">
+            <h2>What I do</h2>
+            <hr>
+            <p>I have passion for the technicalities of computer science (which is a fancy way of saying I like cool
+                things). I don't think I'm quite an expert any specific field but I have worked a number of domains. The
+                listed points below are brief summaries of my experience.</p>
+        </div>
+    </div>
+    <div class="content primary">
+        <div class="container">
+            <h2>Skills</h2>
+            <hr>
+            <p>My work spans across a number of languages. All listed items below are backed with experience from work.</p>
+            <table>
+                <thead>
+                    <td>Languages</td>
+                    <td>Technologies</td>
+                </thead>
+                <tr>
+                    <td>
+                        <i class="fa-brands fa-python"></i> Python<br>
+                        <i class="fa-brands fa-js"></i> JavaScript<br>
+                        <i class="fa-brands fa-html5"></i> HTML / CSS<br>
+                    </td>
+                    <td>
+                        <i class="fa-brands fa-github-alt"></i> Git / GitHub<br>
+                        <i class="fa-solid fa-database"></i> MySQL / SQLite<br>
+                        <i class="fa-brands fa-windows"></i> Windows<br>
+                        <i class="fa-brands fa-linux"></i> Linux / <i class="fa-brands fa-ubuntu"></i>Ubuntu<br>
+                        <i class="fa-brands fa-docker"></i> Docker<br>
+                        <i class="fa-solid fa-subscript"></i> LaTeX / KaTeX<br>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <p>The following are some additional skills I picked on my own through personal projects and university.</p>
+            <table>
+                <tr>
+                    <td>
+                        <i class="fa-solid fa-code"></i> C <br>
+                        <i class="fa-brands fa-java"></i> Java<br>
+                        <i class="fa-brands fa-rust"></i> Rust<br>
+
+                    </td>
+                    <td>
+                        <img src="res/three.ico" alt="THREE.js" style="width: 18px;"> THREE.js<br>
+                        <i class="fa-solid fa-brain"></i> Pytorch / TensorFlow<br>
+                        <i class="fa-solid fa-microchip"></i> Arduino<br>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="content secondary">
+        <div class="container">
+            <p>Thanks for stopping by! If you have any questions, feel free to contact me in the <a href="pages/contact.html" class="link">contacts</a> page.</p>
+        </div>
+    </div>
+    <footer>
+        <p>by Junsu Lee</p>
+    </footer>
+    <script src="script.js"></script>
+    <script type="module" src="banner.js"></script>
+</body>
+
+</html>

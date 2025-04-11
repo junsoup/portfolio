@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Junsu Lee | Portfolio</title>
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="res/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="res/favicon-16x16.png">
+    <link rel="manifest" href="res/site.webmanifest">
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- js -->
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <nav id="topnav">
+        <a href="/pages/index.html">Home</a>
+        <a href="/pages/blog.html">Blog</a>
+        <a href="/pages/projects.html">Projects</a>
+        <a href="/pages/contact.html">Contact</a>
+        <a href="resume.pdf">Résumé</a>
+        <a href="https://github.com/junsoup">Github</a>
+        <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">&#9776;</a>
+    </nav>
+    <div class="banner-short"></div>
+    <div class="content primary">
+        <div class="container">
+            <h2>Projects</h2>
+            <hr>
+            <h3>Koi Fish</h3>
+            <img src="./res/fish.png" alt="Image of fish project" style="width: 800px; max-width: 100%;">
+            <p>This is the project displayed on the home page. This was a larger endeavor than I thought initally.
+                Some of the core things I learned/used in this project were:</p>
+            <ul>
+                <li>Mesh Instancing</li>
+                <li>GTLF 2.0</li>
+                <li>Blender (yes I learned 3D modeling for this)</li>
+                <li>Vertex and Fragment shaders (offloading onto the GPU)</li>
+                <li>Boids algorithm for flocking(?) fish</li>
+            </ul>
+            <p>Boids by itself fairly trivial, but an additional requirement I made was for the fish to A) have boundary logic, and B) also swim for food when the user feeds them. This made the project a bit more challenging. Also, you might have noticed if you refreshed the page a couple times, is that the koi fish color patterns are random. I did this by applying a 3d Simplex noise function to the fish with per instance random offsets in the vertex shader. Colorful (and unique) fish!</p>
+            <p>I also learned how to 3D model, and to create materials. I happily embraced the low-poly style since anything more would be way too difficult.</p>
+            <p>In '_banner_pixelated.js', I attempted to make a pixel-art styled renderer for this, but it didn't feel quite right so I scrapped it.</p>
+        </div>
+    </div>
+
+    <br>
+    <div class="content secondary">
+        <div class="container" style="height: 300px;"></div>
+    </div>
+    <footer>
+        <p>by Junsu Lee</p>
+    </footer>
+</body>
+
+</html>

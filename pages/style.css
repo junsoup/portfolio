@@ -1,0 +1,176 @@
+:root {
+    --color-text: #333333;
+    --color-accent1: #93a4a7;
+    --color-accent2: #93a4a7;
+    --color-background: #f0f1f8;
+    --color-background-off: #e4e4eb;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    color:#333333;
+}
+
+body, html {
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--color-background);
+}
+
+#topnav {
+    background-color: var(--color-background);
+    overflow: hidden;
+    width: 100%;
+    /* position: fixed; */
+    top: 0;
+    z-index: 1;
+    transition: max-height .3s ease-out;
+    max-height: 50px;
+}
+
+#topnav a {
+    float: left;
+    display: block;
+    color: var(--color-text);
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+#topnav a:hover {
+    background-color: var(--color-text);
+    color: var(--color-background);
+}
+
+/* Add a color to the active/current link */
+#topnav a.active {
+    background-color: var(--color-text);
+    color: var(--color-background);
+}
+
+#topnav .icon {
+    display: none;
+    padding: 9px 12px;
+    font-size: 24px;
+    z-index: 2;
+}
+
+@media screen and (max-width: 1023px) {    
+    #topnav a:not(.icon) {
+        display: none;
+    }
+    #topnav a.icon {
+        float: right;
+        display: block;
+    }
+    #topnav.responsive {
+        max-height: 400px;
+        overflow: hidden;
+    }
+    #topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+    #topnav.responsive a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+}
+
+.banner-short {
+    display: block;
+    background-color: var(--color-accent1);
+    height: 200px;
+
+}
+
+.content {
+    background-color: var(--color-background);
+}
+.content.secondary {
+    background-color: var(--color-background-off);
+}
+
+.container {
+    flex: 1;
+    padding: 20px 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 65%;
+    display: block;
+    font-size: 15px;
+    line-height: 40px;
+}
+
+.container h1{
+    line-height: 40px;
+    font-weight: 600;
+    font-size: 40px;
+    margin: auto;
+}
+
+.split {
+    display: flow-root;
+}
+
+footer {
+    background-color: var(--color-accent1);
+    margin-top: 50px;
+    padding: 10px 100px;
+    text-align: left;
+}
+
+.blog {
+    width: 50%;
+}
+
+table {
+    margin: auto;
+}
+thead {
+    font-weight: bolder;
+}
+tr {
+    margin-top: 5px;
+}
+td {
+    padding: 5px 20px;
+    vertical-align: baseline;
+}
+
+.link {
+    color: var(--color-text);
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 350px; /* Minimized height */
+    /* transition: height 0.3s ease-in-out; */
+    overflow: hidden;
+}
+
+
+.banner.expanded {
+    height: 900px; /* Expanded height */
+}
+
+button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
