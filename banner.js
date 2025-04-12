@@ -32,7 +32,7 @@ initPointer(renderer, banner);
 
 
 // Render logic
-let stats = new Stats();
+// let stats = new Stats();
 // document.body.appendChild(stats.dom);
 let lastUpdateTime = 0
 let deltaTime = 0
@@ -48,11 +48,10 @@ function renderPass() {
     // camera.position.clampLength(30, 55);
     controls.update();
     updatePointer(scene, camera);
-    stats.update();
+    // stats.update();
     renderer.render(scene, camera);
-    renderer.setAnimationLoop(renderPass);
 }
-renderPass()
+renderer.setAnimationLoop(renderPass);
 
 // Dom control
 function resizeCanvas() {
