@@ -130,7 +130,7 @@ footer {
 }
 
 .blog {
-    width: 50%;
+    max-width: 80%;
 }
 
 table {
