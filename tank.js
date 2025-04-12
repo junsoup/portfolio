@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 let waterMesh = null;
 let lilyPadInstances = null;
 let fishInstances = null;
-const FISH_COUNT = 40;
+const FISH_COUNT = 20;
 let BOUNDS_RADIUS = 24;
 let BOUNDS_Z = { min: 1, max: 12 }
 let loadStage = 0;
@@ -457,7 +457,7 @@ export function updatePointer(scene, camera) {
         const food = new THREE.Mesh(geometry, material);
 
         // Clamp to the circle edge
-        intersection.point.clampScalar(-BOUNDS_RADIUS+5, BOUNDS_RADIUS-5);
+        intersection.point.clampLength(-BOUNDS_RADIUS+5, BOUNDS_RADIUS-5);
 
         food.position.set(intersection.point.x, intersection.point.y, 15);
         foods.push(food);
