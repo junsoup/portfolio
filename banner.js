@@ -8,6 +8,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 3000);
 // const camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, -1000, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, physicallyCorrectLights: true });
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x111111);
 camera.position.set(-10.2, -22.9, 15.24);
 camera.up = new THREE.Vector3(0, 0, 1);
@@ -49,8 +50,9 @@ function renderPass() {
     updatePointer(scene, camera);
     stats.update();
     renderer.render(scene, camera);
+    renderer.setAnimationLoop(renderPass);
 }
-renderer.setAnimationLoop(renderPass);
+renderPass()
 
 // Dom control
 function resizeCanvas() {
