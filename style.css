@@ -104,7 +104,7 @@ body {
     padding: 20px 0px;
     margin-left: auto;
     margin-right: auto;
-    width: 65%;
+    max-width: 80%;
     display: block;
     font-size: 15px;
     line-height: 40px;
@@ -118,7 +118,8 @@ body {
 }
 
 .split {
-    display: flow-root;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 footer {
