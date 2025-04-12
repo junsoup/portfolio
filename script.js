@@ -16,5 +16,11 @@ function toggleMenu() {
 document.getElementById("toggleButton").addEventListener("click", function (event) {
     event.stopPropagation();
     const banner = document.getElementById("banner");
-    banner.classList.toggle("expanded");
+    // banner.classList.toggle("expanded");
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+        return;
+      }
+      // Make the .element div fullscreen.
+      banner.requestFullscreen();
 });

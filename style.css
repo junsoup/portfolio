@@ -159,11 +159,6 @@ td {
     overflow: hidden;
 }
 
-
-.banner.expanded {
-    height: 900px; /* Expanded height */
-}
-
 button {
     position: absolute;
     top: 10px;
