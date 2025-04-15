@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 let waterMesh = null;
 let lilyPadInstances = null;
 let fishInstances = null;
-const FISH_COUNT = 20;
+const FISH_COUNT = 15;
 let BOUNDS_RADIUS = 24;
 let BOUNDS_Z = { min: 1, max: 12 }
 let loadStage = 0;
