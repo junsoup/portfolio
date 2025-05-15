@@ -39,6 +39,58 @@
     <div class="banner-short"></div>
     <div class="container blog">
         <h1>Blog entries</h1>
+        <h2>05/14/25</h2>
+        <p>Progress on league of legends project:</p>
+        <p>So this past month, I've been working on the league project. I haven't gone into the details before so I'll explain the purpose of the project.</p>
+        <p>The idea is: <b>I'm sick and tired of losing my league of legends games.</b></p>
+        <p>While I can just get better, I feel like most games I lose, the games were unwinnable. You could have put faker in my place and we still would have lost. This is where my project comes in. What my project aims to do is to assist the user in picking their champion; to maximize their chance of winning, even before the game starts.</p>
+        <p>Some may ask, "Why not just look at the most meta champions (the strongest characters in the current game version) and just play that?</p>
+        <p>Here's the issue: </p>
+        <img src="./res/riven.jpg" alt="An image showing the best performing champion (Riven)">
+        <p>You could always pick Riven, and assuming you play pick-ban well to avoid getting counter picked, it would be okay. However, there is most likely a better champion to play in that given scenario.</p>
+        <p>If the rest of your comp is well-rounded, going a split push champion would be great. Or if your team needs a frontliner, going a durable tanking champion would also be better. This applies to all other lanes as well.</p>
+        <p>I've worked on this project on and off for the past 8 years. When I first learned about neural networks in junior year of high school, I imagined a tool like this would be possible. However, the model never seems to train well. It's been about 2 years since my last attempt, so here I am to try again.</p>
+        <p>I started off with getting some data. I fetched some games from riot's api and got started (I had roughly 7000 games at this point). Before I train the pick model, I wanted to test making a winrate model first. </p>
+        <img src="./res/simple_model.png" alt="A depiction of the winrate network.">
+        <p>This model is simple. I input champions from team A and team B, and I output one node, which predicts the outcome of the match. Since champions are referenced with ids, I needed to encode the ids such that numerical closeness doesn't indicate champion closeness. For this, I used one-hot encodings. This expands one champion into the champions space with all zeros except the index of the champion id. So far simple stuff, and this is the same technique I used 8 years ago.</p>
+        <img src="./res/Figure_1.png" alt="Training loss plot of naive model." style="width: 550px;">
+        <p>Unsuprisingly, the model wasn't very good. I had a similar result to this in high school, except I didn't have a loss graph. Back then, my friend and I built the whole model in java from scratch and we didn't have much knowledge of neural networks back then. When we tested this, all we got for the picks were A) the most common champions at the time and B) the strongest champions at the time. It was always like Sett, Jhin, Yasuo, Ashe. At the time, I didn't check for validation loss. So I thought lower loss = good, and was lost when the model didn't work. I now realize this approch tends to strongly overfit. Back then, I used models 5,000x3 or so. It simply found the strongest champions tended to win, so it only outputed those champions.</p>
+        <p>At this point, I started thinking about how different champions are sometimes quite similar in how they play. For example, Jhin and Ashe are quite similar in that they play as utility carries. Jhin can follow up with roots, and Ashe can follow up with W slow + ult stuns. They can still provide utility to the team when behind.</p>
+        <p>Then, I learned about embedding layers. I cannot believe we did not learn this in our machine learning class. For those who do not know what they are, it's an alternative approch for situations where you would need to one-hot encode. Rather than expanding the champion selection to a sparse layer with width = category size, you can instead convert the champion to a n-dimensional vector representation. You can think of this as forming n-word descriptors for champions rather than saying the champion itself. For example, a 4-dimensional vector embedding for champions (range of +-1) could cause Ashe to be:<br>
+            {<br>
+            &nbsp&nbsp"physical vs magic damage": -0.8,<br>
+            &nbsp&nbsp"carry vs support": -0.7,<br>
+            &nbsp&nbsp"damage vs utility", -0.1,<br>
+            &nbsp&nbsp"melee vs ranged": 0.9<br>
+            }<br>
+        Note: we wouldn't have labels nor know the meaning of each dimension, as it is learned.</p>
+
+        <p>With this approch, it won't be able to recognize the picks themselves, rather, their characteristics. (In theory.)</p>
+        <p>Here were the inital results (I added stratified k-fold cross-validation):</p>
+        <img src="./res/Figure_7.png" alt="Plot of training and validation loss, training and validation accuracy. Training performs decent, Validation shows signs of overfitting." style="width: 550px;">
+        <p>It seems like the results are worse! ahahahah.</p>
+        <p>Got more data (250,000 total matches), added dropout, weight decay, label smoothing, and tuned the model for about a week straight. Here are my results:</p>
+        <img src="./res/Figure_c3.png" alt="Plot of current model. Peaks at around 54.5% accuracy." style="width: 550px;">
+        <p>Awesome. I'll take that for now. Now for the pick model.</p>
+        <p>I'm still a bit unsure about the correct method for this, but I opted for one-hot encodings. I do this because there are champion specific combinations that matter for picks, which would suffer if the champions are obscured with embedding layers. (I think)</p>
+        <img src="./res/pick_model.png" alt="Graphic of picking models">
+        <p>My idea is to train two models. One for maximizing for blue team, and the other for red team. I train each on only games that side won, and also augment games to also have variations where picks are incomplete. This way, the model will learn to identify the champion combinations that tend to win games.</p>
+        <img src="./res/pick_4.png" alt="Plot of loss and accuracy of pick model (blue)">
+        <p>The plot looks suspiciously smooth, which I assume is due to it guessing champions that are visible, but whatever. I don't think that matters too much. I might recreate this with a bit different logic later but it seems to work fine for now.</p>
+        <p>Results:</p>
+        <img src="./res/results.png" alt="A show of our results after trying to get best champions." style="width: 500px;">
+        <img src="./res/picker_tool.png" alt="" style="width: 629.33px;">
+        <p>A group of friends and I played a couple games with the model. We used it to pick the best champions (when we could). We also used the model to estimate our chances to win the game.</p>
+        <p><b>Note:</b> On the bottom lost game, the webapp I built broke so we picked whatever. For the other lost game, we didn't pick a recommended jungler because he didn't know how to play any of them. Regardless, we had fairly good picks, and won most of our games. The first two games we won despite the odds. For the other five games, our match outcome aligned with the prediction.</p>
+        <p><b>Concluding thoughts: </b><br>
+            The front-end design can use some work. Currently, it takes too long to find and insert champions, leaving little time think about which ones to pick.<br>
+            Pick combinations are unaccounted for. For example, lucian + nami could have been a good pick in some games, but by themselves they are marked as bad picks. This is a missed opportunity. This would raise my output nodes to like 36,000 to uniquely identify each champion pair, which is rather large. Or, I could run simulations of combinations of top-n champions. This could work, but it would take longer for inference.<br>
+        </p>
+        <p>All in all, I am happy with my results. If I think of better methods, I'll revisit the project.</p>
+
+
+
+        <hr>
         <h2>04/15/25</h2>
         <p>Time for another blog post!</p>
         <p>I've finished two more projects and actually put it up on github so I can show it off. They're the koi fish and apple projects. I showed the fish project to some of my friends, and one of them told me it gave him motion sickness. Cool. I also tried going on the page on a old phone, and it was super laggy. I honestly don't know how or why this happens. I thought it was due to the shader code being forced to run on non-applicable hardware but even with an empty scene, if I have hardware acceleration disabled, the page becomes unresponsive. Actually, me typing this made me realize that a page not being responsive means it's CPU limited, but whatever.</p>
