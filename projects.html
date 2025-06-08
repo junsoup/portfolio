@@ -44,31 +44,6 @@
     </div>
     <div class="content primary">
         <div class="container">
-            <h3>Biologically-inspired Neural Network</h3>
-            <p>For a long-time now, I have been deeply unsatisfied with the current state of neural networks and specifically LLMs. The thing that bothers me the most are people saying things like, "OMG these chatbots like ChatGPT are so good at thinking!!!", stating how human-like they are. They do not think like humans do.</p>
-            <p>Here is the clear issue with neural networks:</p>
-            <ul>
-                <li>They are first trained, then used in inference. Their neural weights do not change during runtime.</li>
-                <li>They need a lot of data since they cannot "learn" in the traditional sense of learning through experiences.</li>
-                <li>They are not time-dependent. Humans never stop thinking, unlike LLMs.</li>
-            </ul>
-            <p>Recently, I came across a paper released by Sakana AI called <a href="https://sakana.ai/ctm/">the Continuous Thought Machine</a>. It's an incredible paper and rethinks the traditional methods of neural networks. In short, they have a MLP that loops over ticks, instead of being feed-forward one time like most neural networks. In the output layer, they have per-neuron models that hold a history of information from previous ticks. These outputs are also fed into a history, a sync matrix is calculated, then finally the latent representation is computed. The model is trained like a traditional network, but only pull the output from the latent representation if the confidence is high enough. The outputs from the per-neuron models are fed back into the input, additionally, the environment input is modulated with a multi-attention head, which acts to preserve the current tick's thoughts onto the next tick. This makes the runtime indeterminant, but their paper shows incredible results.</p>
-            <p>I think this is half the key to having true artificial intelligence. The other key is to learn dynamically instead of using backpropagation.</p>
-            <p>With this, I came up with my own model that is Biologically-inspired:</p>
-            <p>Here is the architecture:</p>
-            <ul>
-                <li>Looping MLP with sensory input (audio and vision)</li>
-                <li>Biological neuron simulation instead of linear function with activation. Specifically the FitzHugh-Nagumo Model, which is a simplified version of the Hodgkin-Huxley model.</li>
-                <li>Dynamically sized vision input.</li>
-                <li>Sync matrix + latent representation</li>
-                <li>Dynamic neuron weight updates via systems to act as forms of neuroplasticity.</li>
-            </ul>
-            <p>There's a lot here and honestly it seems pretty unlikely to be fruitful but I'll keep trying. I've implemented all parts except the last bullet point. Here is a teaser image</p>
-            <img src="./res/CTM.png" alt="current state of brain model." style="width: 800px; max-width: 100%;">
-        </div>
-    </div>
-    <div class="content secondary">
-        <div class="container">
             <h3>Optimal Team Composition Finder</h3>
             <img src="./res/picker_tool.png" alt="Team picker webapp." style="width: 800px; max-width: 100%;">
             <p>This a project I have been working on for many years. I went into the details of this project on my blogs page. In summary, I developed a neural network to identify optimal characters to play in a competitive game by identifying key combinations of champions that synergize well while being good against the enemy champions.</p>
@@ -84,7 +59,7 @@
             <p>You can read more on this on my blog page!</p>
         </div>
     </div>
-    <div class="content primary">
+    <div class="content secondary">
         <div class="container">
             <h3>Koi Fish</h3>
             <img src="./res/fish.png" alt="Image of fish project" style="width: 800px; max-width: 100%;">
@@ -102,7 +77,7 @@
             <p>In '_banner_pixelated.js', I attempted to make a pixel-art styled renderer for this, but it didn't feel quite right so I scrapped it.</p>
         </div>
     </div>
-    <div class="content secondary">
+    <div class="content primary">
         <div class="container">
             <h3>Apple Destroyer</h3>
             <img src="./res/apple.jpg" alt="Image of apple project" style="width: 800px; max-width: 100%;">
