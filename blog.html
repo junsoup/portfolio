@@ -41,6 +41,58 @@
         <br>
         <h1>Blog entries</h1>
         <hr>
+        <h2>06/24/25</h2>
+        <h3>League of Legends project (part 2)</h3>
+        <p>If you haven't seen the first League blog post, please check that out first!
+            <br>
+            <b>Note:</b> I'm going to be more in-depth about champion select. If you aren't average to high elo, sorry!
+            I'll try to explain the best I can.
+        </p>
+        <p>Okay. So <b>TLDR</b> from last time, I made a webapp where you can <b>insert champions</b> from champion select, and it will
+            show you the <b>best champions</b> to pick using ML inference.</p>
+        <p>Sounds great? No. It was absolutely trash.</p>
+        <p>There were many, many issues with this, and hindsight hit like a truck on this one.</p>
+        <ol>
+            <b>Issues:</b>
+            <li>I made the <b>embedding size</b> (aka vocabulary of champions) a <b>subset</b> of all champions. I had
+                the cutoff at <b>0.15%</b> pickrate. At the
+                time, I thought I was being smart by shaving off on the model size (Makes embedding layers 50% to 80%
+                smaller!). However, if a rare champion is
+                picked, you literally cannot run the model. (Which I thought wouldn't happen, but it actually did in the
+                test games with the enemy picking Zoe jungle!)</li>
+            <li>The user has to manually input the champions with lane assignments into the app. <b>Manually inputting the
+                champion takes too long, is difficult, and is likely to get wrong.</b> <br> For example, lets say the enemy
+                first picked Yorick. Unfortunately, we have to assume it's a top-lane pick. But there's still a good (albeit smaller) chance
+                they are jungle. But we have to lock in the Yorick pick top for the ML model. This would make the app to
+                suggest a top-yorick counter, which could then in-turn be counterpicked by the actual enemy top. <br>
+                This makes us have to meta-game and figure out their bluff, and pick it for jungle instead. By the time
+                the player figures this out, the player already used up their 20 seconds and can't even use the app. :(
+            </li>
+            <li>The partial winrate model has a massive bias issue. It's hard to explain so I'll use an example. Let's say there's a champion like <b>Dr. Mundo</b>. He's <i>super</i> tanky. So tanky infact, he has a 80% winrate. OMG!! With this, in our ML model, it show Dr. Mundo as the top suggestion. The model learned that all games with Dr. Mundo is practically always winning... <b>UH OH! DO YOU HEAR THAT??? *SNIP SNIP* OH NO!!! </b>The enemy picked Gwen!!! <b>THE ONE AND ONLY TOPLANER THAT DOES PERCENT MAX HEALTH TRUE DAMAGE AND ABSOLUTELY DESTROYS TANKS!!!</b> and the game is lost. In situations with champions like Dr. Mundo, you would only pick him IF the enemy already picked a non-Gwen toplaner. <p>Imagine we are playing a food-character fighting simulator. You pick to play as a giant block of cheese. This is an easy pick because big cheese = super smelly = wrecks every other food but then the enemy suddenly picks the stainless-steel-cheese-grater character.</p>
+            <p>Um, okay I'll stop it there with the analogies. Basically, the model learns to assume Gwen will never be picked since most games with Mundo do not have a Gwen on the enemy side.</p>
+            </li>
+        </ol>
+        <p>Anyways, okay. So first, let's start with the manual picking issue. So we can hookup to the query the rest api of the league client. This is not endorsed by Riot but whatever. I used a neat table showing all the <a href="https://lcu.kebs.dev/">endpoints</a>. To make the actual query, you need the auth token and the port of the league client process. So I tried to make a website that looks at all the user's running processes and find the associated access tokens and ports and yea, if that was allowed we would not open our browsers.</p>
+        <p>Plan B: I decided to learn Electron because I thought that would be easy. I was wrong, but that's okay.</p>
+        <p>I decided to ditch the league process polling logic because I couldn't find a solution that'd work on all systems. Instead, league also stores this information in a lockfile in the installation directory.</p>
+        <p>So here's the layout:
+            <ul>
+                <li>Electron App</li>
+                <li>Poll for league client</li>
+                <li>Poll for league client's champion select data</li>
+                <li>Use the data to compute the best picks and render.</li>
+            </ul>
+        </p>
+        <p>So now that we have an auto-input setup, let's fix the algorithm. Here is the million RP question, "What if we could somehow <b>simulate variations</b> of future picks, and just <b>assume the worst-case scenario</b>?"</p>
+        <p>And the million LP answer is: A Monte Carlo Tree Search! Specifically, a MCTS but with a ML inferencing for the simulation step. (The same algorithm used for AlphaGo!)</p>
+        <p>I also retrained the models with a full vocabulary embedding size. It took like an hour to train but the acc. was pretty much the same as before at 55%ish. I also trained it on missing picks as it would be found in champ-select. For the Monte Carlo, I also made the simulations simulate according to a single or double pick accordingly, which was another issue mentioned in the last blog post. I had a really hard time hooking everything up because it was hard to test but I managed. I created the ONNX model and set that up. Then, I finally tried it out.</p>
+        <p>Here's a rough-draft of the app:</p>
+        <img src="./res/Electron.jpg" alt="current state of brain model." style="width: 300px; max-width: 100%;">
+        <p><b>Note:</b> We don't actually have the data to know what lanes the enemies are. I trained the model with shuffled enemy lane positions so we could use it as is. I just forgot to delete the placeholder text.</p>
+        <p>I also forgot to reorder the suggestions on change.</p>
+        <p>And this brings us to present time.</p>
+        <p><b>Concluding thoughts:</b> the suggestions are not good. This is likely due to uniform randomly picking the expansion node. There is a lot of benefit to be had from simulating the more likely picks since we are running out of time in the simuation. I'll make those updates and make another post.</p>
+        <hr>
         <h2>06/07/25</h2>
         <h3>Biologically-inspired Neural Network</h3>
         <p>For a long-time now, I have been deeply unsatisfied with the current state of neural networks and
@@ -60,7 +112,8 @@
         <p>Recently, I came across a paper released by Sakana AI called <a href="https://sakana.ai/ctm/">the Continuous
                 Thought Machine</a>. It's an incredible paper and rethinks the traditional methods of neural networks.
         </p>
-        <p>Putting it really really simply, they basically made a classical feed-forward network that loops. The output
+        <p>Putting it really really simply, they basically made a classical feed-forward network but the main difference
+            is that it loops the output nodes back into the input nodes. The output
             nodes are redirected back into the input to continue "thinking". This process repeats until a specific node
             is high enough. This serves as the model's confidence level with their answer. This makes the runtime
             indeterminant, but their paper shows incredible results.</p>
@@ -82,10 +135,11 @@
             <li>Dynamic neuron weight updates via systems to act as forms of neuroplasticity. This would serve to train
                 the "How" pathway.</li>
         </ul>
-        <p> The primary goal of the biological brain is to <b>predict the future</b>. The better
+        <p> So here's my take. The primary goal of the biological brain is to <b>predict the future</b>. The better
             you can predict the future, the better you can plan. The better you can plan, the more energy you can save /
-            energy you can earn. If you see bear footprints, you need to predict there could be a bear nearby.
-            Otherwise, you may be in danger. If you end up seeing the bear too late, you would have to enter your flight or fight
+            energy you can earn. If you see bear footprints, you need to predict there could be a bear nearby,
+            otherwise, you may be in danger. If you end up seeing the bear too late, you would have to enter your flight
+            or fight
             reflex which wastes valuable energy when all of this could have been avoided if you had predicted it from
             the start.</p>
         <p>There's a lot here and honestly it seems pretty unlikely to be fruitful but I'll keep trying. I've
@@ -94,7 +148,7 @@
         <br>
         <hr>
         <h2>05/14/25</h2>
-        <p>Progress on league of legends project:</p>
+        <h3>League of Legends project:</h3>
         <p>So this past month, I've been working on the league project. I haven't gone into the details before so I'll
             explain the purpose of the project.</p>
         <p>The idea is: <b>I'm sick and tired of losing my league of legends games.</b></p>
@@ -141,16 +195,18 @@
             one-hot encode. Rather than expanding the champion selection to a sparse layer with width = category size,
             you can instead convert the champion to a n-dimensional vector representation. You can think of this as
             forming n-word descriptors for champions rather than saying the champion itself. For example, a
-            4-dimensional vector embedding for champions (range of +-1) for Ashe could be something like:<br>
+            4-dimensional vector embedding for champions (range of 0 to 1) for Ashe could be something like:<br>
             {<br>
-            &nbsp&nbsp"physical vs magic damage": -0.8,<br>
-            &nbsp&nbsp"carry vs support": -0.7,<br>
-            &nbsp&nbsp"damage vs utility", -0.1,<br>
+            &nbsp&nbsp"physical vs magic damage": 0.1,<br>
+            &nbsp&nbsp"supportive vs carry": 0.7,<br>
+            &nbsp&nbsp"damage vs utility", 0.5,<br>
             &nbsp&nbsp"melee vs ranged": 0.9<br>
             }<br>
-            Note: we wouldn't have labels nor know the meaning of each dimension, as it is learned.</p>
+            <b>Note: </b>we wouldn't have labels nor know the meaning of each dimension, as it is learned.
+        </p>
 
-        <p>With this approch, it won't be able to recognize the picks themselves, rather, their characteristics. (In
+        <p><u>With this approch, it won't be able to recognize the picks themselves, rather, their characteristics.</u>
+            (In
             theory.)</p>
         <p>Here were the inital results (I added stratified k-fold cross-validation):</p>
         <img src="./res/Figure_7.png"
